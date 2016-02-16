@@ -11,8 +11,9 @@ SLACK_USERNAME = os.getenv('SLACK_USERNAME')
 
 
 class TornadoSlackHandler(SlackerLogHandler):
+
     _thread_pool = ThreadPoolExecutor(1)
-    
+
     @run_on_executor(executor='_thread_pool')
     def emit(self, message):
         super(TornadoSlackHandler, self).emit(message)

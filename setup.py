@@ -25,6 +25,7 @@ setup(
     extras_require={
         'tests': [
             'nose',
+            'flake8',
         ]
     }
 )
