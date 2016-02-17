@@ -66,6 +66,16 @@ class TornadoSlackHandler(logging.Handler):
         if response.error:
             logging.warn('Failed to post error on slack: %s', response.error)
 
+        try:
+            data = json.loads(response.body.decode('utf-8'))
+        except json.JSONDecodeError:
+            logging.warn(
+                'Failed to parse slack.com response: %s', response.body)
+            return
+
+        if not data['ok']:
+            logging.warn('Failed to post error on slack: %s', data['error'])
+
 
 def auto_setup(logger_name=None):
     if not SLACK_APIKEY:

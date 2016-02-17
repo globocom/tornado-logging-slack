@@ -3,7 +3,8 @@ import json
 import tornado_logging_slack
 from mock import patch
 from tornado.testing import AsyncTestCase, gen_test
-from tornado.httpclient import AsyncHTTPClient, HTTPResponse, HTTPError
+from tornado.httpclient import AsyncHTTPClient, HTTPResponse
+from six import BytesIO
 from six.moves import urllib
 
 
@@ -12,16 +13,17 @@ class MockHTTPClient(AsyncHTTPClient):
     def initialize(self, *args, **kwargs):
         super(MockHTTPClient, self).initialize(*args, **kwargs)
         self.called_requests = []
-        self.error = None
+        self.code = 200
+        self.body = b'{"ok": true}'
 
     def fetch_impl(self, request, callback):
         self.called_requests.append(request)
-        code = 200
 
-        if self.error:
-            code = self.error.code
-
-        callback(HTTPResponse(request=request, code=code, error=self.error))
+        callback(HTTPResponse(
+            request=request,
+            code=self.code,
+            buffer=BytesIO(self.body),
+        ))
 
     @property
     def call_count(self):
@@ -102,7 +104,16 @@ class TornadoSlackHandlerTestCase(AsyncTestCase):
 
     @gen_test
     def test_error_posting_into_slack(self):
-        self.http_client.error = HTTPError(500)
+        self.http_client.code = 500
+        self.http_client.body = b'{"ok": false, "error": "unhandled_error"}'
+
+        self.logger.error('error message')
+        self.assertEqual(self.http_client.call_count, 1)
+
+    @gen_test
+    def test_error_decoding_slack_response(self):
+        self.http_client.code = 200
+        self.http_client.body = b'Access denied'
 
         self.logger.error('error message')
         self.assertEqual(self.http_client.call_count, 1)

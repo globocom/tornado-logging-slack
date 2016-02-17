@@ -1,5 +1,6 @@
 [![Build Status](https://travis-ci.org/globocom/tornado-logging-slack.png?branch=master)](https://travis-ci.org/globocom/tornado-logging-slack)
 [![Coverage Status](https://coveralls.io/repos/github/globocom/tornado-logging-slack/badge.svg?branch=master)](https://coveralls.io/github/globocom/tornado-logging-slack?branch=master)
+[![PyPI version](https://badge.fury.io/py/tornado-logging-slack.svg)](https://badge.fury.io/py/tornado-logging-slack)
 
 # Tornado Slack logging
 Log Tornado errors to a [Slack](https://slack.com/) channel without blocking the event loop. Based on [mathiasose/slacker_log_handler](https://github.com/mathiasose/slacker_log_handler)
