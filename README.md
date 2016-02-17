@@ -1,3 +1,6 @@
+[![Build Status](https://travis-ci.org/globocom/tornado-logging-slack.png?branch=master)](https://travis-ci.org/globocom/tornado-logging-slack)
+[![Coverage Status](https://coveralls.io/repos/github/globocom/tornado-logging-slack/badge.svg?branch=master)](https://coveralls.io/github/globocom/tornado-logging-slack?branch=master)
+
 # Tornado logging slack
 Log tornado errors in slack chat without block eventloop, based on [mathiasose/slacker_log_handler](https://github.com/mathiasose/slacker_log_handler)
 

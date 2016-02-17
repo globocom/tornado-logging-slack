@@ -11,5 +11,9 @@ python:
 
 install:
   - make setup
+  - pip install coveralls
 
 script: make test
+
+after_success:
+  coveralls
