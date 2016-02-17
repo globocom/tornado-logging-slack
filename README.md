@@ -2,7 +2,7 @@
 [![Coverage Status](https://coveralls.io/repos/github/globocom/tornado-logging-slack/badge.svg?branch=master)](https://coveralls.io/github/globocom/tornado-logging-slack?branch=master)
 
 # Tornado logging slack
-Log tornado errors in slack chat without block eventloop, based on [mathiasose/slacker_log_handler](https://github.com/mathiasose/slacker_log_handler)
+Log Tornado errors to a [Slack](https://slack.com/) channel without blocking the event loop. Based on [mathiasose/slacker_log_handler](https://github.com/mathiasose/slacker_log_handler)
 
 ## Install
 
@@ -30,6 +30,8 @@ if __name__ == '__main__':
 - SLACK_PROXY_PORT: HTTP proxy port, default: 3128;
 - SLACK_PROXY_USERNAME: HTTP proxy username;
 - SLACK_PROXY_PASSWORD: HTTP proxy password;
+
+**Note:** A proxy only works with Tornado's `curl_httpclient`.
 
 ## Contributing
 Fork, patch, test and send a pull request.
