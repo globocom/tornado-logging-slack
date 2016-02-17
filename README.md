@@ -27,6 +27,10 @@ if __name__ == '__main__':
 - SLACK_CHANNEL: Set which channel you want to post to;
 - SLACK_USERNAME: The username that will post to Slack;
 
+- SLACK_PROXY_HOST: HTTP proxy hostname if you use a proxy;
+- SLACK_PROXY_PORT: HTTP proxy port, default: 3128;
+- SLACK_PROXY_USERNAME: HTTP proxy username;
+- SLACK_PROXY_PASSWORD: HTTP proxy password;
 
 ## Contributing
 Fork, patch, test and send a pull request.

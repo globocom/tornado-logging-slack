@@ -37,12 +37,12 @@ class TornadoSlackHandlerTestCase(AsyncTestCase):
 
         self.http_client = MockHTTPClient(force_instance=True)
 
-        handler = tornado_logging_slack.TornadoSlackHandler(
+        self.handler = tornado_logging_slack.TornadoSlackHandler(
             'my-key', 'my-channel', 'my-username',
             http_client=self.http_client
         )
         self.logger = logging.Logger('test')
-        self.logger.addHandler(handler)
+        self.logger.addHandler(self.handler)
 
     def test_disabled_loglevels(self):
         self.logger.debug('debug message')
@@ -68,6 +68,14 @@ class TornadoSlackHandlerTestCase(AsyncTestCase):
             'username': ['my-username'],
             'icon_emoji': [':heavy_exclamation_mark:'],
         })
+
+        self.assertEqual(request.proxy_host, None)
+        self.assertEqual(request.proxy_port, None)
+        self.assertEqual(request.proxy_username, None)
+
+        # I don't know what's the reason of tornado sets default password
+        # to be empty string
+        self.assertEqual(request.proxy_password, '')
 
     @gen_test
     def test_error_with_traceback(self):
@@ -99,9 +107,28 @@ class TornadoSlackHandlerTestCase(AsyncTestCase):
         self.logger.error('error message')
         self.assertEqual(self.http_client.call_count, 1)
 
+    @gen_test
+    def test_proxy(self):
+        self.handler.proxy_host = 'my-proxy.com'
+        self.handler.proxy_port = 2831
+        self.handler.proxy_username = 'my-user'
+        self.handler.proxy_password = 'my-password'
+
+        self.logger.error('error message')
+        self.assertEqual(self.http_client.call_count, 1)
+
+        request = self.http_client.called_requests[0]
+        self.assertEqual(request.proxy_host, 'my-proxy.com')
+        self.assertEqual(request.proxy_port, 2831)
+        self.assertEqual(request.proxy_username, 'my-user')
+        self.assertEqual(request.proxy_password, 'my-password')
+
     @patch('tornado_logging_slack.SLACK_APIKEY', new='my-api-key')
     @patch('tornado_logging_slack.SLACK_CHANNEL', new='my-channel')
     @patch('tornado_logging_slack.SLACK_USERNAME', new='my-username')
+    @patch('tornado_logging_slack.SLACK_PROXY_HOST', new='proxy-host')
+    @patch('tornado_logging_slack.SLACK_PROXY_USERNAME', new='proxy-username')
+    @patch('tornado_logging_slack.SLACK_PROXY_PASSWORD', new='proxy-password')
     def test_auto_setup_if_enabled(self):
         tornado_logging_slack.auto_setup('enabledLogger')
 
@@ -115,6 +142,11 @@ class TornadoSlackHandlerTestCase(AsyncTestCase):
         self.assertEqual(handler.api_key, 'my-api-key')
         self.assertEqual(handler.channel, 'my-channel')
         self.assertEqual(handler.username, 'my-username')
+
+        self.assertEqual(handler.proxy_host, 'proxy-host')
+        self.assertEqual(handler.proxy_port, 3128)
+        self.assertEqual(handler.proxy_username, 'proxy-username')
+        self.assertEqual(handler.proxy_password, 'proxy-password')
 
     @patch('tornado_logging_slack.SLACK_APIKEY', new=None)
     def test_auto_setup_if_disabled(self):
