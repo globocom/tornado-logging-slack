@@ -1,5 +1,5 @@
 # Tornado logging slack
-Log tornado in slack chat without block eventloop, based on [mathiasose/slacker_log_handler](https://github.com/mathiasose/slacker_log_handler)
+Log tornado errors in slack chat without block eventloop, based on [mathiasose/slacker_log_handler](https://github.com/mathiasose/slacker_log_handler)
 
 ## Install
 
@@ -26,4 +26,4 @@ if __name__ == '__main__':
 
 
 ## Contributing
-Fork, patch, and send a pull request.
+Fork, patch, test and send a pull request.

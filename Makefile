@@ -1,8 +1,8 @@
 TESTS_FILE=tests.py
 MODULE_DIR=tornado_logging_slack/
 
-.PHONY: all setup clean flake8
-all: clean setup test flake8
+.PHONY: all setup clean flake8 coverage
+all: clean setup test
 
 setup:
 	@pip install -Ue .\[tests\]
