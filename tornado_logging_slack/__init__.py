@@ -68,7 +68,7 @@ class TornadoSlackHandler(logging.Handler):
 
         try:
             data = json.loads(response.body.decode('utf-8'))
-        except json.JSONDecodeError:
+        except ValueError:
             logging.warn(
                 'Failed to parse slack.com response: %s', response.body)
             return
