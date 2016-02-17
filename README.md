@@ -14,7 +14,7 @@ pip install tornado-logging-slack
 import tornado_logging_slack
 
 if __name__ == '__main__':
-    tornado_logging_slack.setup()
+    tornado_logging_slack.auto_setup()
     IOLoop.current().start()
 ```
 

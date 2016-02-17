@@ -20,12 +20,15 @@ setup(
     platforms=['any'],
     install_requires=[
         'tornado',
-        'slacker-log-handler'
+        'six',
     ],
     extras_require={
         'tests': [
             'nose',
+            'coverage',
+            'yanc',
             'flake8',
+            'mock',
         ]
     }
 )
